@@ -42,7 +42,7 @@ do
     done
     
     #######
-    cmd="./s3cmd --add-header=x-archive-queue-derive:0 put /tmp/${bfile}_index.zip s3://$BASE_HEADER/$bfile.zip"
+    cmd="./s3cmd --add-header=x-archive-queue-derive:0 put /tmp/${bfile}_index.zip s3://$BASE_HEADER/${bfile}_index.zip"
     echo going to $cmd
     while true
     do 
