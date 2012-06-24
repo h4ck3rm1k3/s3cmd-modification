@@ -1,6 +1,6 @@
 #!/bin/sh
 BASE_URL=http://archive.org/details/
-for bfile in `cat bucketlist.txt`
+for bfile in `ls data/`
 do
     BASE_HEADER=fosm-20120401130001-${bfile} #something that should be unique
     echo processing $bfile    
