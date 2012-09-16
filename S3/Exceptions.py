@@ -49,10 +49,14 @@ class S3Error (S3Exception):
 			error_node = tree
 			if not error_node.tag == "Error":
 				error_node = tree.find(".//Error")
-			for child in error_node.getchildren():
-				if child.text != "":
-					debug("ErrorXML: " + child.tag + ": " + repr(child.text))
-					self.info[child.tag] = child.text
+                        if error_node:
+                                for child in error_node.getchildren():
+                                        if child.text != "":
+                                                debug("ErrorXML: " + child.tag + ": " + repr(child.text))
+                                                self.info[child.tag] = child.text
+                        else:
+                                debug("S3Error response empty: %s (%s)" % (self.status, self.reason))
+                                
 		self.code = self.info["Code"]
 		self.message = self.info["Message"]
 		self.resource = self.info["Resource"]
