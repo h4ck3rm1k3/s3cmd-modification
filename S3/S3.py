@@ -67,10 +67,12 @@ class S3Request(object):
 		for header in self.headers.keys():
 			if header.startswith("x-amz-"):
 				h += header+":"+str(self.headers[header])+"\n"
+		debug("Bucket: %s" % self.resource['bucket'])
 		if self.resource['bucket']:
 			h += "/" + self.resource['bucket']
 		h += self.resource['uri']
 		debug("SignHeaders: " + repr(h))
+		debug("SignHeaders2: %s" % h)
 		signature = sign_string(h)
 
 		self.headers["Authorization"] = "AWS "+self.s3.config.access_key+":"+signature
@@ -149,6 +151,8 @@ class S3(object):
 		self.redir_map[bucket] = redir_hostname
 
 	def format_uri(self, resource):
+                debug('bucket: ' + resource['bucket'])                
+                debug('uri: ' + resource['uri'])                
 		if resource['bucket'] and not check_bucket_name_dns_conformity(resource['bucket']):
 			uri = "/%s%s" % (resource['bucket'], resource['uri'])
 		else:
@@ -212,8 +216,10 @@ class S3(object):
 		return response
 
 	def bucket_create(self, bucket, bucket_location = None):
+                debug("bucket_create :%s" % bucket)
 		headers = SortedDict(ignore_case = True)
 		body = ""
+                debug("bucket_location: %s" % bucket_location)
 		if bucket_location and bucket_location.strip().upper() != "US":
 			bucket_location = bucket_location.strip()
 			if bucket_location.upper() == "EU":
@@ -229,8 +235,13 @@ class S3(object):
 			check_bucket_name(bucket, dns_strict = False)
 		if self.config.acl_public:
 			headers["x-amz-acl"] = "public-read"
+		debug(headers)
 		request = self.create_request("BUCKET_CREATE", bucket = bucket, headers = headers)
+
+		debug(request)
+		debug(body)
 		response = self.send_request(request, body)
+		debug(response)
 		return response
 
 	def bucket_delete(self, bucket):

@@ -345,10 +345,12 @@ def check_bucket_name(bucket, dns_strict = True):
 			raise Exceptions.ParameterError("Bucket name '%s' must start with a letter or a digit" % bucket)
 		if not re.search("[0-9a-z]$", bucket):
 			raise Exceptions.ParameterError("Bucket name '%s' must end with a letter or a digit" % bucket)
+        debug('check_bucket_name OK: ' + bucket)                
 	return True
 __all__.append("check_bucket_name")
 
 def check_bucket_name_dns_conformity(bucket):
+        debug('check_bucket_name_dns_conformity: ' + bucket)                
 	try:
 		return check_bucket_name(bucket, dns_strict = True)
 	except Exceptions.ParameterError:

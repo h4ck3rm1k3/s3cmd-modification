@@ -196,6 +196,7 @@ def cmd_bucket_create(args):
 			raise ParameterError("Expecting S3 URI with just the bucket name set instead of '%s'" % arg)
 		try:
 			response = s3.bucket_create(uri.bucket(), cfg.bucket_location)
+			output(u"Resp '%s' " % response)
 			output(u"Bucket '%s' created" % uri.uri())
 		except S3Error, e:
 			if S3.codes.has_key(e.info["Code"]):
